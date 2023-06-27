@@ -1,0 +1,25 @@
+
+name: Aurora API CI/CD pipeline
+
+on:
+  repository_dispatch:
+    types: [my-event]
+
+jobs: 
+  test_steps_with_conditions:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps: 
+      - name: Step 1 - Try composit
+        run: |
+            echo "Step 2a - build docker iamge only"
+            echo "github.ref: ${{ github.ref }}"
+            echo "github.head_ref: ${{ github.head_ref }}"
+            echo "github.base_ref: ${{ github.base_ref }}"
+            echo "github.event_name: ${{ github.event_name }}"
+            echo "github.event: ${{ github.event }}"
+            echo "github.event.action: ${{ github.event.action }}"
+            echo "github.event.pull_request.merged : ${{ github.event.pull_request.merged  }}"
