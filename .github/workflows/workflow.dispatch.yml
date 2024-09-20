@@ -51,7 +51,7 @@ jobs:
           git checkout -b feature/automated
           git config --global user.email "dev@example.com"
           git config --global user.name "automated"
-          git add .
+          git add index.txt
           git commit -m "version up"
           git push origin feature/automated
       
