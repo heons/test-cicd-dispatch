@@ -50,17 +50,17 @@ jobs:
           sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"aurora-api\" = \"${{ github.event.inputs.tag }}\"/" index.txt
           echo $(cat index.txt)
 
-      - name: Commit
-        run: |
-          rm -rf repo-a
-          git checkout -b feature/automated
-          git config --global user.email "dev@example.com"
-          git config --global user.name "automated"
-          git add index.txt
-          echo $(git status -s)
-          git commit -m "version up"
-          echo $(git status -s)
-          git push origin feature/automated
+      # - name: Commit
+      #   run: |
+      #     rm -rf repo-a
+      #     git checkout -b feature/automated
+      #     git config --global user.email "dev@example.com"
+      #     git config --global user.name "automated"
+      #     git add index.txt
+      #     echo $(git status -s)
+      #     git commit -m "version up"
+      #     echo $(git status -s)
+      #     git push origin feature/automated
       
       - name: Create pull request
         id: create_pr
