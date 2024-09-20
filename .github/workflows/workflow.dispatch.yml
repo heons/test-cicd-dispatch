@@ -48,6 +48,8 @@ jobs:
 
       - name: Commit
         run: |
+          git config --global user.email "dev@example.com"
+          git config --global user.name "automated"
           git add .
           git commit -m "version up"
       
