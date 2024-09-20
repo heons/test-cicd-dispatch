@@ -48,16 +48,19 @@ jobs:
 
       - name: Commit
         run: |
+          git checkout -b feature/automated
           git config --global user.email "dev@example.com"
           git config --global user.name "automated"
           git add .
           git commit -m "version up"
+          git push origin feature/automated
       
       - name: Create pull request
-        id: open-pr
-        uses: repo-sync/pull-request@v2
+        id: create_pr
+        uses: peter-evans/create-pull-request@v3
         with:
-          github_token: ${{ secrets.CICD_TOKEN }}
-          destination_branch: "master"
-          pr_title: "[Automated] ${{ github.event.inputs.prTitle }}"
-          pr_draft: false
+          token: ${{ secrets.CICD_TOKEN }}
+          title: "[Automated] ${{ github.event.inputs.prTitle }}"
+          body: 'This PR was automatically created by GitHub Actions.'
+          branch: feature/automated
+          base: master
