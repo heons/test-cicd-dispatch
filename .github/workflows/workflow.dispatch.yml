@@ -12,6 +12,10 @@ on:
         description: 'Tag for aurora services to trigger release builds'
         required: true
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   read-latest-tag:
     runs-on: ubuntu-latest
