@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'heons/test-semantic-version-up-file'
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.CICD_TOKEN }}
           ref: 'master'
           path: 'repo-a'
 
