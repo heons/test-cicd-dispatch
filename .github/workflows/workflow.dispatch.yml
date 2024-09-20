@@ -1,0 +1,38 @@
+
+name: Dispatch Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      prTitle:
+        description: 'Title of the release PR'    
+        required: true
+        default: 'chore/<ticket> master to release <year>/<month>'
+
+jobs:
+  read-latest-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Checkout Repository A
+        uses: actions/checkout@v2
+        with:
+          repository: 'heons/test-semantic-version-up-file'
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: 'repo-a'
+
+      - name: Fetch Tags from Repository A
+        run: |
+          cd repo-a
+          git fetch --tags
+
+      - name: Get Latest Tag
+        id: get_latest_tag
+        run: |
+          cd repo-a
+          echo "::set-output name=latest_tag::$(git describe --tags $(git rev-list --tags --max-count=1))"
+
+      - name: Print Latest Tag
+        run: |
+          echo "The latest tag from Repository A is: ${{ steps.get_latest_tag.outputs.latest_tag }}"
