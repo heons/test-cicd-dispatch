@@ -45,3 +45,17 @@ jobs:
         run: |
           sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"aurora-api\" = \"${{ github.event.inputs.tag }}\"/" index.txt
           echo $(cat index.txt)
+
+      - name: Commit
+        run: |
+          git add .
+          git commit -m "version up"
+      
+      - name: Create pull request
+        id: open-pr
+        uses: repo-sync/pull-request@v2
+        with:
+          github_token: ${{ secrets.CICD_TOKEN }}
+          destination_branch: "master"
+          pr_title: "[Automated] ${{ github.event.inputs.prTitle }}"
+          pr_draft: false
