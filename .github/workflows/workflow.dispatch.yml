@@ -13,13 +13,14 @@ jobs:
   read-latest-tag:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       
       - name: Checkout Repository A
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: 'heons/test-semantic-version-up-file'
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: 'master'
           path: 'repo-a'
 
       - name: Fetch Tags from Repository A
