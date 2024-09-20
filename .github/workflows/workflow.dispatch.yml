@@ -52,6 +52,7 @@ jobs:
 
       - name: Commit
         run: |
+          rm -rf repo-a
           git checkout -b feature/automated
           git config --global user.email "dev@example.com"
           git config --global user.name "automated"
