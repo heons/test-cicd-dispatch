@@ -56,7 +56,9 @@ jobs:
           git config --global user.email "dev@example.com"
           git config --global user.name "automated"
           git add index.txt
+          echo $(git status -s)
           git commit -m "version up"
+          echo $(git status -s)
           git push origin feature/automated
       
       - name: Create pull request
