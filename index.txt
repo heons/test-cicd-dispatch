@@ -3,3 +3,6 @@
   "a-interpolation" = "0.0.1"
 
   elasticsearch_index_name = "aurora_q2_aug13_2024"
+  
+
+    "aurora-uat" = ["2024-08","2024-09"]

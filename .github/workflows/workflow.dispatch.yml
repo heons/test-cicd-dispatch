@@ -4,10 +4,6 @@ name: Dispatch Tests
 on:
   workflow_dispatch:
     inputs:
-      prTitle:
-        description: 'Title of the release PR'    
-        required: true
-        default: 'chore/<ticket> master to release <year>/<month>'
       ticket:
         description: 'Ticket number for the release e.g. AURORA-000'
         required: true
@@ -49,12 +45,14 @@ jobs:
 
       - name: Print Latest Tag
         run: |
+          echo $(pwd)
           echo "The latest tag from Repository A is: ${{ steps.get_latest_tag.outputs.latest_tag }}"
 
       - name: Replace text
         run: |
           sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
-          sed -i "s/\"elasticsearch_index_name\"\s*=\s*\"aurora[^\n]+\"/\"elasticsearch_index_name\" = \"${{ github.event.inputs.esIndex }}\"/" index.txt
+          sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
+          sed -i "s/\"elasticsearch_index_name\"\s*=\s*\"aurora_q2_aug13_2024\"/elasticsearch_index_name = \"${{ github.event.inputs.esIndex }}\"/" index.txt
           echo $(cat index.txt)
 
       # - name: Commit
