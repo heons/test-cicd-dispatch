@@ -47,7 +47,7 @@ jobs:
 
       - name: Replace text
         run: |
-          sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"aurora-api\" = \"${{ github.event.inputs.tag }}\"/" index.txt
+          sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
           echo $(cat index.txt)
 
       # - name: Commit
