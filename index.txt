@@ -1,3 +1,5 @@
 
-  "a-api"           = "0.29.0"
-  "a-interpolation" = "0.29.0"
+  "a-api"           = "0.0.1"
+  "a-interpolation" = "0.0.1"
+
+  elasticsearch_index_name = "aurora_q2_aug13_2024"

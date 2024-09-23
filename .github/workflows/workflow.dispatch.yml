@@ -8,8 +8,14 @@ on:
         description: 'Title of the release PR'    
         required: true
         default: 'chore/<ticket> master to release <year>/<month>'
-      tag:
-        description: 'Tag for aurora services to trigger release builds'
+      ticket:
+        description: 'Ticket number for the release e.g. AURORA-000'
+        required: true
+      releaseYearMonth:
+        description: 'Release year and month e.g. 2024-09'
+        required: true
+      esIndex:
+        description: 'The name of the Elasticsearch index for the release'
         required: true
 
 permissions:
@@ -48,6 +54,7 @@ jobs:
       - name: Replace text
         run: |
           sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
+          sed -i "s/\"elasticsearch_index_name\"\s*=\s*\"aurora[^\n]+\"/\"elasticsearch_index_name\" = \"${{ github.event.inputs.esIndex }}\"/" index.txt
           echo $(cat index.txt)
 
       # - name: Commit
@@ -67,7 +74,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.CICD_TOKEN }}
-          title: "[Automated] ${{ github.event.inputs.prTitle }}"
+          title: "[Automated] chore/${{ github.event.inputs.ticket }} master to release ${{ github.event.inputs.releaseYearMonth }}"
           body: 'This PR was automatically created by GitHub Actions.'
           branch: feature/automated
           base: master
