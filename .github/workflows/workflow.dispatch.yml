@@ -42,24 +42,25 @@ jobs:
       - name: Fetch Tags from Repository A
         run: |
           cd repo-a
-          git fetch --tags
+          
 
       - name: Get Latest Tag
         id: get_latest_tag
         run: |
-          cd repo-a
-          echo "::set-output name=latest_tag::$(git tag | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -t '.' -k 1,1n -k 2,2n -k 3,3n | tail -n 1)"
-
-      - name: Print Latest Tag
-        run: |
           echo $(pwd)
+          cd repo-a
+          echo $(pwd)
+          git fetch --tags
+          echo "::set-output name=latest_tag::$(git tag | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -t '.' -k 1,1n -k 2,2n -k 3,3n | tail -n 1)"
           echo "The latest tag from Repository A is: ${{ steps.get_latest_tag.outputs.latest_tag }}"
+          cd ..
+          rm -rf repo-a
 
       - name: Replace text
         run: |
           sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
-          sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\"           = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
-          sed -i "s/\"elasticsearch_index_name\"\s*=\s*\"aurora_q2_aug13_2024\"/elasticsearch_index_name = \"${{ github.event.inputs.esIndex }}\"/" index.txt
+          sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\" = \"${{ steps.get_latest_tag.outputs.latest_tag }}\"/" index.txt
+          sed -i "s/elasticsearch_index_name\s*=\s*\"aurora[^\n]*\"/elasticsearch_index_name = \"${{ github.event.inputs.esIndex }}\"/" index.txt
           echo $(cat index.txt)
 
       # - name: Commit
@@ -79,7 +80,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.CICD_TOKEN }}
-          title: "[Automated] chore/${{ github.event.inputs.ticket }} ${{ github.event.inputs.env }} aurora release ${{ github.event.inputs.releaseYearMonth }}"
+          title: "[Automated] chore/${{ github.event.inputs.ticket }} aurora release ${{ github.event.inputs.env }} ${{ github.event.inputs.releaseYearMonth }}"
           body: 'This PR was automatically created by GitHub Actions.'
           branch: chore/${{ github.event.inputs.ticket }}_auora_release_${{ github.event.inputs.env }}
           base: master
