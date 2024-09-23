@@ -39,11 +39,6 @@ jobs:
           ref: 'master'
           path: 'repo-a'
 
-      - name: Fetch Tags from Repository A
-        run: |
-          cd repo-a
-          
-
       - name: Get Latest Tag
         id: get_latest_tag
         run: |
@@ -62,18 +57,6 @@ jobs:
           sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\" = \"${{ env.VERSION }}\"/" index.txt
           sed -i "s/elasticsearch_index_name\s*=\s*\"aurora[^\n]*\"/elasticsearch_index_name = \"${{ github.event.inputs.esIndex }}\"/" index.txt
           echo $(cat index.txt)
-
-      # - name: Commit
-      #   run: |
-      #     rm -rf repo-a
-      #     git checkout -b feature/automated
-      #     git config --global user.email "dev@example.com"
-      #     git config --global user.name "automated"
-      #     git add index.txt
-      #     echo $(git status -s)
-      #     git commit -m "version up"
-      #     echo $(git status -s)
-      #     git push origin feature/automated
       
       - name: Create pull request
         id: create_pr
