@@ -4,6 +4,13 @@ name: Dispatch Tests
 on:
   workflow_dispatch:
     inputs:
+      env:
+        description: Envrionment to release
+        required: true
+        type: choice
+        options:
+          - uat
+          - prod
       ticket:
         description: 'Ticket number for the release e.g. AURORA-000'
         required: true
@@ -72,7 +79,7 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.CICD_TOKEN }}
-          title: "[Automated] chore/${{ github.event.inputs.ticket }} master to release ${{ github.event.inputs.releaseYearMonth }}"
+          title: "[Automated] chore/${{ github.event.inputs.ticket }} ${{ github.event.inputs.env }} aurora release ${{ github.event.inputs.releaseYearMonth }}"
           body: 'This PR was automatically created by GitHub Actions.'
-          branch: feature/automated
+          branch: chore/${{ github.event.inputs.ticket }}_auora_release_${{ github.event.inputs.env }}
           base: master
