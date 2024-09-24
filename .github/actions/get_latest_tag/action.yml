@@ -1,0 +1,35 @@
+name: 'Get the latest tag'
+description: 'Get the latest tag from a repository'
+inputs:
+  url:  # repository url
+    description: 'Repository url. e.g. EDRInc/aurora-release'
+    required: true
+  token:
+    description: 'Github token'
+    required: true
+outputs:
+  tag:
+    description: "The latest tag from the repository"
+    value: ${{ steps.get-latest-tag.outputs.tag }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout A Repository
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.url }}
+        token: ${{ inputs.token }}
+        ref: 'master'
+        path: 'repo-tmp'
+
+    - name: Get Latest Tag
+      id: get-latest-tag
+      shell: bash
+      run: |
+        cd repo-tmp
+        git fetch --tags
+        VERSION=$(git tag | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -t '.' -k 1,1n -k 2,2n -k 3,3n | tail -n 1)
+        echo "tag=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+        cd ..
+        rm -rf repo-tmp
