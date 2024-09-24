@@ -30,6 +30,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Get tag using action
+        id: get-tag-repo-a
+        uses: ./actions/.github/actions/get_latest_tag
+        with:
+          url: 'heons/test-semantic-version-up-file'
+          token: ${{ secrets.CICD_TOKEN }}
+
+      - name: print-tag
+        id: print-tag
+        run: echo ${{ steps.get-tag-repo-a.outputs.tag }}
       
       - name: Checkout Repository A
         uses: actions/checkout@v4
