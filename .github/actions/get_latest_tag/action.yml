@@ -33,3 +33,9 @@ runs:
         echo "tag=$(echo $RANDOM)" >> $GITHUB_OUTPUT
         cd ..
         rm -rf repo-tmp
+
+    - name: Print
+      shell: bash
+      run: |
+        echo ${{ steps.get-latest-tag.outputs.tag }}
+        echo "${{ steps.get-latest-tag.outputs.tag }}""
