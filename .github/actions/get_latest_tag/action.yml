@@ -38,4 +38,4 @@ runs:
       shell: bash
       run: |
         echo ${{ steps.get-latest-tag.outputs.tag }}
-        echo "${{ steps.get-latest-tag.outputs.tag }}""
+        echo "${{ steps.get-latest-tag.outputs.tag }}"
