@@ -41,31 +41,11 @@ jobs:
       - name: print-tag
         id: print-tag
         run: echo ${{ steps.get-tag-repo-a.outputs.tag }}
-      
-      - name: Checkout Repository A
-        uses: actions/checkout@v4
-        with:
-          repository: 'heons/test-semantic-version-up-file'
-          token: ${{ secrets.CICD_TOKEN }}
-          ref: 'master'
-          path: 'repo-a'
-
-      - name: Get Latest Tag
-        id: get_latest_tag
-        run: |
-          echo $(pwd)
-          cd repo-a
-          echo $(pwd)
-          git fetch --tags
-          VERSION=$(git tag | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -t '.' -k 1,1n -k 2,2n -k 3,3n | tail -n 1)
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          cd ..
-          rm -rf repo-a
 
       - name: Replace text
         run: |
-          sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ env.VERSION }}\"/" index.txt
-          sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\" = \"${{ env.VERSION }}\"/" index.txt
+          sed -i "s/\"a-api\"\s*=\s*\"[0-9.]*\"/\"a-api\"           = \"${{ steps.get-tag-repo-a.outputs.tag }}\"/" index.txt
+          sed -i "s/\"a-interpolation\"\s*=\s*\"[0-9.]*\"/\"a-interpolation\" = \"${{ steps.get-tag-repo-a.outputs.tag }}\"/" index.txt
           sed -i "s/elasticsearch_index_name\s*=\s*\"aurora[^\n]*\"/elasticsearch_index_name = \"${{ github.event.inputs.esIndex }}\"/" index.txt
           echo $(cat index.txt)
       
