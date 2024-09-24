@@ -1,5 +1,5 @@
 name: 'Get the latest tag'
-description: 'Get the latest tag from a repository'
+description: 'Get the latest tag from a repository. The tag format should be x.x.x'
 inputs:
   url:  # repository url
     description: 'Repository url. e.g. EDRInc/aurora-release'
@@ -33,9 +33,3 @@ runs:
         echo "tag=$(echo $VERSION)" >> $GITHUB_OUTPUT
         cd ..
         rm -rf repo-tmp
-
-    - name: Print
-      shell: bash
-      run: |
-        echo ${{ steps.get-latest-tag.outputs.tag }}
-        echo "${{ steps.get-latest-tag.outputs.tag }}"
