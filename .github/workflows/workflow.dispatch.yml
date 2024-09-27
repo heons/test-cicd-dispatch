@@ -33,7 +33,7 @@ jobs:
 
       - name: Get tag using action
         id: get-tag-repo-a
-        uses: heons/test-workflow/.github/actions/get_latest_tag
+        uses: heons/test-workflow/.github/actions/get_latest_tag@master
         with:
           url: 'heons/test-semantic-version-up-file'
           token: ${{ secrets.CICD_TOKEN }}
