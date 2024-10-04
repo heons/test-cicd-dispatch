@@ -26,12 +26,17 @@ permissions:
   pull-requests: write
 
 jobs:
-  read-latest-tag:
-    uses: heons/test-workflow/.github/workflows/create-pr.yml@master
+  # read-latest-tag:
+  #   uses: heons/test-workflow/.github/workflows/create-pr.yml@master
+  #   with:
+  #     env: ${{ github.event.inputs.env }}
+  #     ticket: ${{ github.event.inputs.ticket }}
+  #     releaseYearMonth: ${{ github.event.inputs.releaseYearMonth }}
+  #     esIndex: ${{ github.event.inputs.esIndex }}
+  #   secrets:
+  #     PAT: ${{ secrets.CICD_TOKEN }}
+  test:
+    uses: heons/test-workflow/.github/workflows/validate-pr-title.yml@master
     with:
       env: ${{ github.event.inputs.env }}
-      ticket: ${{ github.event.inputs.ticket }}
-      releaseYearMonth: ${{ github.event.inputs.releaseYearMonth }}
-      esIndex: ${{ github.event.inputs.esIndex }}
-    secrets:
-      PAT: ${{ secrets.CICD_TOKEN }}
+
